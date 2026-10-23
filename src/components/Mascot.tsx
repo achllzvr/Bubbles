@@ -41,13 +41,13 @@ export function Mascot({
       aria-label={`Bubble companion is ${moodCopy[mood]}`}
     >
       <div
-        className="bubble-wobble relative border border-white/40"
+        className="bubble-wobble relative border-2 border-ink-stroke"
         style={{
           width: size,
           height: size,
           background: `radial-gradient(circle at 32% 24%, color-mix(in srgb, ${moodColor[mood]} 45%, white), ${moodColor[mood]} 72%)`,
           borderRadius: '48% 52% 50% 50% / 51% 47% 53% 49%',
-          boxShadow: `0 ${size * 0.14}px ${size * 0.4}px color-mix(in srgb, ${moodColor[mood]} 32%, transparent)`,
+          boxShadow: `0 ${Math.max(3, Math.round(size * 0.08))}px 0 0 color-mix(in srgb, ${moodColor[mood]} 55%, #4a4458)`,
         }}
       >
         <span className="absolute left-[19%] top-[14%] h-[22%] w-[19%] rounded-full bg-white/40 blur-[2px]" />
@@ -122,7 +122,7 @@ export function Mascot({
         )}
       </div>
 
-      {showLabel && <span className="pixel-label text-ink-faint">{moodCopy[mood]}</span>}
+      {showLabel && <span className="chrome-label text-ink-faint">{moodCopy[mood]}</span>}
     </div>
   )
 }

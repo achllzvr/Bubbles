@@ -1,6 +1,7 @@
 @import '@fontsource/nunito/latin-400.css';
 @import '@fontsource/nunito/latin-600.css';
 @import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/nunito/latin-800.css';
 @import '@fontsource/press-start-2p/latin-400.css';
 @import 'tailwindcss';
 
@@ -11,6 +12,7 @@
   --color-ink: var(--ink);
   --color-ink-dim: var(--ink-dim);
   --color-ink-faint: var(--ink-faint);
+  --color-ink-stroke: var(--ink-stroke);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
@@ -20,6 +22,7 @@
   --color-bubble-nui: var(--bubble-nui);
   --color-bubble-nuni: var(--bubble-nuni);
   --color-accent: var(--accent);
+  --color-accent-dark: var(--accent-dark);
   --color-on-accent: var(--on-accent);
   --color-accent-soft: var(--accent-soft);
   --color-bubble-mint: var(--bubble-mint);
@@ -31,7 +34,9 @@
   --color-bubble-ink: var(--bubble-ink);
   --color-bubble-ink-soft: var(--bubble-ink-soft);
   --color-success: var(--success);
+  --color-success-dark: var(--success-dark);
   --color-danger: var(--danger);
+  --color-danger-dark: var(--danger-dark);
 }
 
 :root,
@@ -39,12 +44,13 @@
   --surface: #fff8f2;
   --surface-2: #fffcf8;
   --surface-3: #f6efe6;
-  --surface-glass: rgba(255, 252, 248, 0.86);
   --ink: #2f2b3c;
   --ink-dim: #6a6478;
   --ink-faint: #958fa3;
-  --line: rgba(73, 62, 88, 0.12);
+  --ink-stroke: #4a4458;
+  --line: #4a4458;
   --accent: #c48ad8;
+  --accent-dark: #8a5a9e;
   --on-accent: #2a2434;
   --accent-soft: #f3e4fb;
   --bubble-ui: #f7a8b8;
@@ -58,18 +64,38 @@
   --bubble-sky: #7fd4e8;
   --bubble-orchid: #e0a0e8;
   --success: #4a9d78;
+  --success-dark: #2f6b50;
   --danger: #d8666a;
-  --shadow: 0 14px 36px rgba(120, 90, 130, 0.11);
-  --shadow-soft: 0 6px 18px rgba(120, 90, 130, 0.08);
-  --shadow-lift: 0 10px 28px rgba(120, 90, 130, 0.12);
+  --danger-dark: #a04045;
+  --shadow: 0 5px 0 0 var(--ink-stroke);
+  --shadow-soft: 0 4px 0 0 var(--ink-stroke);
+  --shadow-lift: 0 7px 0 0 var(--ink-stroke);
+  --shadow-press: 0 0 0 0 var(--ink-stroke);
+  --shadow-btn-primary: 0 5px 0 0 var(--accent-dark);
+  --shadow-btn-primary-hover: 0 7px 0 0 var(--accent-dark);
+  --shadow-btn-primary-press: 0 0 0 0 var(--accent-dark);
+  --shadow-btn-success: 0 5px 0 0 var(--success-dark);
+  --shadow-btn-success-hover: 0 7px 0 0 var(--success-dark);
+  --shadow-btn-success-press: 0 0 0 0 var(--success-dark);
+  --shadow-btn-danger: 0 5px 0 0 var(--danger-dark);
+  --shadow-btn-danger-hover: 0 7px 0 0 var(--danger-dark);
+  --shadow-btn-danger-press: 0 0 0 0 var(--danger-dark);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
   --space-5: 1.25rem;
   --space-6: 1.5rem;
-  --radius-card: 1.75rem;
-  --radius-panel: 2rem;
+  --border-width: 2px;
+  --radius-card: 1rem;
+  --radius-panel: 1.25rem;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-press: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 100ms;
+  --duration-base: 200ms;
+  --duration-slow: 350ms;
+  --duration-enter: 550ms;
   --grain-opacity: 0.02;
 }
 
@@ -83,12 +109,13 @@
   --surface: #1a1624;
   --surface-2: #231f30;
   --surface-3: #2e293c;
-  --surface-glass: rgba(35, 31, 48, 0.88);
   --ink: #faf3ea;
   --ink-dim: #c5bbcc;
   --ink-faint: #91879c;
-  --line: rgba(240, 225, 247, 0.12);
+  --ink-stroke: #c5bbcc;
+  --line: #c5bbcc;
   --accent: #d4a8e8;
+  --accent-dark: #9a6fb0;
   --on-accent: #2a2434;
   --accent-soft: #3a3048;
   --bubble-ui: #e98693;
@@ -102,10 +129,22 @@
   --bubble-sky: #70c0d4;
   --bubble-orchid: #c890d0;
   --success: #70c99d;
+  --success-dark: #3d8a64;
   --danger: #ee8792;
-  --shadow: 0 16px 40px rgba(8, 6, 16, 0.32);
-  --shadow-soft: 0 8px 22px rgba(8, 6, 16, 0.22);
-  --shadow-lift: 0 12px 32px rgba(8, 6, 16, 0.28);
+  --danger-dark: #b04a52;
+  --shadow: 0 5px 0 0 var(--ink-stroke);
+  --shadow-soft: 0 4px 0 0 var(--ink-stroke);
+  --shadow-lift: 0 7px 0 0 var(--ink-stroke);
+  --shadow-press: 0 0 0 0 var(--ink-stroke);
+  --shadow-btn-primary: 0 5px 0 0 var(--accent-dark);
+  --shadow-btn-primary-hover: 0 7px 0 0 var(--accent-dark);
+  --shadow-btn-primary-press: 0 0 0 0 var(--accent-dark);
+  --shadow-btn-success: 0 5px 0 0 var(--success-dark);
+  --shadow-btn-success-hover: 0 7px 0 0 var(--success-dark);
+  --shadow-btn-success-press: 0 0 0 0 var(--success-dark);
+  --shadow-btn-danger: 0 5px 0 0 var(--danger-dark);
+  --shadow-btn-danger-hover: 0 7px 0 0 var(--danger-dark);
+  --shadow-btn-danger-press: 0 0 0 0 var(--danger-dark);
   --grain-opacity: 0.03;
 }
 
@@ -129,7 +168,9 @@ body {
   -webkit-font-smoothing: antialiased;
   user-select: none;
   touch-action: manipulation;
-  transition: background-color 220ms ease, color 220ms ease;
+  transition:
+    background-color var(--duration-base) var(--ease-in-out),
+    color var(--duration-base) var(--ease-in-out);
 }
 
 body::before {
@@ -161,7 +202,7 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--accent) 75%, white);
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -247,13 +288,17 @@ select:focus-visible,
   }
 }
 
-@keyframes focus-halo {
+@keyframes selected-ring {
   0%,
   100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--bubble-orchid) 22%, transparent);
+    box-shadow:
+      0 0 0 3px var(--accent),
+      0 5px 0 0 var(--accent-dark);
   }
   50% {
-    box-shadow: 0 0 0 14px color-mix(in srgb, var(--bubble-peach) 0%, transparent);
+    box-shadow:
+      0 0 0 4px var(--accent),
+      0 6px 0 0 var(--accent-dark);
   }
 }
 
@@ -326,17 +371,26 @@ select:focus-visible,
   text-transform: uppercase;
 }
 
+.chrome-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .playful-card {
-  border: 1px solid var(--line);
-  background: var(--surface-glass);
+  border: var(--border-width) solid var(--ink-stroke);
+  background: var(--surface-2);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(18px);
   border-radius: var(--radius-card);
 }
 
 .playful-panel {
   border-radius: var(--radius-card);
-  background: color-mix(in srgb, var(--surface-3) 70%, transparent);
+  border: var(--border-width) solid var(--ink-stroke);
+  background: var(--surface-3);
   padding: var(--space-4);
   box-shadow: var(--shadow-soft);
 }
@@ -349,6 +403,32 @@ select:focus-visible,
   box-shadow: var(--shadow-lift);
 }
 
+.chunky-input {
+  width: 100%;
+  min-height: 44px;
+  border: var(--border-width) solid var(--ink-stroke);
+  border-radius: var(--radius-card);
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 0.65rem 0.9rem;
+  box-shadow: var(--shadow-soft);
+  transition:
+    border-color var(--duration-fast) var(--ease-press),
+    box-shadow var(--duration-fast) var(--ease-press),
+    transform var(--duration-fast) var(--ease-press);
+}
+
+.chunky-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 3px 4px 0 0 var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+.chunky-input::placeholder {
+  color: var(--ink-faint);
+}
+
 .bubble-badge {
   display: inline-flex;
   align-items: center;
@@ -357,12 +437,14 @@ select:focus-visible,
   min-height: 1.35rem;
   padding: 0.15rem 0.45rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--surface-2) 55%, white 45%);
+  border: var(--border-width) solid var(--ink-stroke);
   background: var(--surface-2);
-  box-shadow: 0 3px 10px rgba(120, 90, 130, 0.08);
+  box-shadow: 0 3px 0 0 var(--ink-stroke);
   font-size: 0.625rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -394,11 +476,11 @@ select:focus-visible,
 }
 
 .focus-halo {
-  animation: focus-halo 2.3s ease-in-out infinite;
+  animation: selected-ring 2.3s ease-in-out infinite;
 }
 
 .animate-sparkle {
-  animation: sparkle-pop 900ms ease-out both;
+  animation: sparkle-pop 900ms var(--ease-out) both;
 }
 
 .typing-dot {

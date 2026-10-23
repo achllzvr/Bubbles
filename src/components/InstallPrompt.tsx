@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   getDeferredInstallPrompt,
   promptInstall,
   subscribeInstallPrompt,
 } from '../lib/installPrompt'
+import { ChunkyButton } from './ui'
+import { slideUp } from './ui/motionPresets'
 
 function isStandalone(): boolean {
   return (
@@ -50,8 +53,6 @@ export function InstallPrompt() {
     }
   }, [])
 
-  if (!visible || isStandalone()) return null
-
   async function onInstallClick() {
     if (getDeferredInstallPrompt()) {
       const outcome = await promptInstall()
@@ -77,45 +78,52 @@ export function InstallPrompt() {
       : 'Look for “Add to Home Screen” or “Install app” in your browser menu.'
 
   return (
-    <div className="playful-card pointer-events-auto absolute bottom-3 left-1/2 z-40 w-[min(540px,92vw)] -translate-x-1/2 rounded-[1.7rem] px-4 py-3">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex gap-3">
-          <span
-            className="bubble-wobble mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center bg-bubble-peach text-lg text-bubble-ink soft-shadow"
-            aria-hidden
-          >
-            ✦
-          </span>
-          <div>
-            <p className="text-sm font-bold text-ink">
-              {mode === 'howto' ? 'Keep Bubbles one tap away' : 'Give Bubbles its own home'}
-            </p>
-            <p className="mt-1 text-xs leading-relaxed text-ink-dim">
-              {mode === 'howto'
-                ? howtoBody
-                : 'Add it to your home screen for a full-screen, distraction-free map.'}
-            </p>
+    <AnimatePresence>
+      {visible && !isStandalone() && (
+        <motion.div
+          key="install-prompt"
+          variants={slideUp}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="playful-card pointer-events-auto absolute bottom-3 left-1/2 z-40 w-[min(540px,92vw)] -translate-x-1/2 rounded-[var(--radius-panel)] px-4 py-3"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex gap-3">
+              <span
+                className="bubble-wobble mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center border-2 border-ink-stroke bg-bubble-peach text-lg text-bubble-ink soft-shadow"
+                aria-hidden
+              >
+                ✦
+              </span>
+              <div>
+                <p className="text-sm font-bold text-ink">
+                  {mode === 'howto' ? 'Keep Bubbles one tap away' : 'Give Bubbles its own home'}
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-ink-dim">
+                  {mode === 'howto'
+                    ? howtoBody
+                    : 'Add it to your home screen for a full-screen, distraction-free map.'}
+                </p>
+              </div>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              {mode === 'prompt' && (
+                <ChunkyButton
+                  variant="primary"
+                  size="sm"
+                  onClick={() => void onInstallClick()}
+                >
+                  {hasNativePrompt ? 'Add it' : 'Show me how'}
+                </ChunkyButton>
+              )}
+              <ChunkyButton variant="ghost" size="sm" onClick={dismiss}>
+                Maybe later
+              </ChunkyButton>
+            </div>
           </div>
-        </div>
-        <div className="flex shrink-0 items-center gap-2">
-          {mode === 'prompt' && (
-            <button
-              type="button"
-              onClick={() => void onInstallClick()}
-              className="rounded-full bg-accent px-4 py-1.5 text-xs font-bold text-on-accent shadow-sm transition hover:-translate-y-0.5"
-            >
-              {hasNativePrompt ? 'Add it' : 'Show me how'}
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={dismiss}
-            className="rounded-full px-3 text-xs font-bold text-ink-faint hover:text-ink-dim"
-          >
-            Maybe later
-          </button>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

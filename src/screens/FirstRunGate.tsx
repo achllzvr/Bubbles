@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
 import { initLocalModel } from '../ai/router'
 import { DEFAULT_MODEL_ID, ensureSettings, getSettings, updateSettings } from '../db/schema'
 import { friendlyDownloadError, friendlyDownloadMessage } from '../lib/downloadCopy'
 import { useSessionStore } from '../store/sessionStore'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Mascot } from '../components/Mascot'
+import { ChunkyButton } from '../components/ui'
+import { enterUp } from '../components/ui/motionPresets'
 
 export function FirstRunGate() {
   const setView = useSessionStore((s) => s.setView)
@@ -51,12 +54,17 @@ export function FirstRunGate() {
       <span className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-bubble-peach/22 blur-3xl" />
       <span className="absolute -bottom-28 right-10 h-80 w-80 rounded-full bg-bubble-orchid/20 blur-3xl" />
       <span className="absolute right-1/4 top-8 h-40 w-40 rounded-full bg-bubble-sky/16 blur-3xl" />
-      <div className="playful-card relative flex max-h-[92vh] max-w-3xl items-center gap-7 overflow-y-auto rounded-[2.5rem] p-8">
+      <motion.div
+        variants={enterUp}
+        initial="hidden"
+        animate="visible"
+        className="playful-card relative flex max-h-[92vh] max-w-3xl items-center gap-7 overflow-y-auto rounded-[var(--radius-panel)] p-8"
+      >
         <Mascot mood={starting ? 'thinking' : 'idle'} size={96} />
         <div className="flex flex-col items-start gap-4">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-4xl font-bold tracking-tight text-ink">Meet Bubbles</h1>
-            <span className="pixel-label rounded-full bg-accent-soft px-3 py-1.5 text-ink-dim">
+            <span className="chrome-label rounded-full border-2 border-accent-dark bg-accent-soft px-3 py-1.5 text-ink-dim soft-shadow">
               offline friend
             </span>
           </div>
@@ -74,7 +82,7 @@ export function FirstRunGate() {
                 {Array.from({ length: 20 }, (_, index) => (
                   <span
                     key={index}
-                    className={`h-3 flex-1 rounded-[3px] transition-colors duration-300 ${
+                    className={`h-3 flex-1 rounded-[3px] border-2 border-ink-stroke transition-colors duration-300 ${
                       index < Math.max(1, Math.round(pct / 5)) ? 'bg-accent' : 'bg-surface-3'
                     }`}
                   />
@@ -90,22 +98,18 @@ export function FirstRunGate() {
               )}
             </div>
           ) : (
-            <button
-              type="button"
-              onClick={() => void startDownload()}
-              className="rounded-full bg-accent px-6 py-3 font-bold text-on-accent shadow-lg transition hover:-translate-y-0.5"
-            >
+            <ChunkyButton variant="primary" size="lg" onClick={() => void startDownload()}>
               Bring my companion in
-            </button>
+            </ChunkyButton>
           )}
 
           {error && (
-            <p className="max-w-xl rounded-2xl bg-danger/12 px-4 py-3 text-sm leading-relaxed text-danger">
+            <p className="max-w-xl rounded-[var(--radius-card)] border-2 border-danger-dark bg-danger/12 px-4 py-3 text-sm leading-relaxed text-danger soft-shadow">
               {error}
             </p>
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

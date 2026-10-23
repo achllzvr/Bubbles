@@ -13,9 +13,15 @@ function PortraitHint() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-surface p-8 text-center landscape:hidden">
       <div className="mb-2 flex items-end gap-3" aria-hidden>
-        <span className="bubble-idle h-14 w-14 bg-bubble-peach" />
-        <span className="bubble-idle h-9 w-9 bg-bubble-sky" style={{ animationDelay: '-2.5s' }} />
-        <span className="bubble-idle h-11 w-11 bg-bubble-orchid" style={{ animationDelay: '-1.2s' }} />
+        <span className="bubble-idle h-14 w-14 border-2 border-ink-stroke bg-bubble-peach soft-shadow" />
+        <span
+          className="bubble-idle h-9 w-9 border-2 border-ink-stroke bg-bubble-sky soft-shadow"
+          style={{ animationDelay: '-2.5s' }}
+        />
+        <span
+          className="bubble-idle h-11 w-11 border-2 border-ink-stroke bg-bubble-orchid soft-shadow"
+          style={{ animationDelay: '-1.2s' }}
+        />
       </div>
       <p className="text-2xl font-bold tracking-tight text-ink">Give your bubbles more room</p>
       <p className="type-body max-w-sm text-ink-dim">
@@ -79,7 +85,7 @@ export default function App() {
             (token, index) => (
               <span
                 key={token}
-                className="animate-float-soft h-6 w-6 rounded-full"
+                className="animate-float-soft h-6 w-6 rounded-full border-2 border-ink-stroke soft-shadow"
                 style={{
                   background: `var(${token})`,
                   animationDelay: `${index * -0.45}s`,
@@ -88,7 +94,7 @@ export default function App() {
             ),
           )}
         </div>
-        <p className="pixel-label-lg text-ink-dim">waking up…</p>
+        <p className="chrome-label text-ink-dim">waking up…</p>
       </div>
     )
   }

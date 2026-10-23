@@ -14,6 +14,8 @@ import { useSessionStore } from '../store/sessionStore'
 import { BubbleCard } from './BubbleCard'
 import { BubbleEditPanel } from './BubbleEditPanel'
 import { Mascot } from './Mascot'
+import { ChunkyButton, ChunkyIconButton } from './ui'
+import { springSoft } from './ui/motionPresets'
 
 interface MapPoint {
   task: Task
@@ -417,66 +419,67 @@ export function BubbleBoard() {
       >
         <div className="playful-card pointer-events-auto flex items-center gap-3 rounded-full px-4 py-2.5 text-[11px] font-semibold text-ink-dim">
           <span className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-bubble-sky" aria-hidden />
+            <span className="h-2.5 w-2.5 rounded-full border-2 border-ink-stroke bg-bubble-sky" aria-hidden />
             <b className="text-ink">{activeCount}</b> floating
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-bubble-orchid" aria-hidden />
+            <span className="h-2.5 w-2.5 rounded-full border-2 border-ink-stroke bg-bubble-orchid" aria-hidden />
             <b className="text-ink">{focusCount}</b> in focus
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-bubble-butter" aria-hidden />
+            <span className="h-2.5 w-2.5 rounded-full border-2 border-ink-stroke bg-bubble-butter" aria-hidden />
             <b className="text-ink">{poppedCount}</b> popped
           </span>
         </div>
 
         <div className="pointer-events-auto flex items-center gap-2">
-          <p className="playful-card hidden rounded-full px-4 py-2.5 text-[11px] font-semibold text-ink-dim lg:block">
-            Drag to explore · scroll to zoom · hold to focus
+          <p className="playful-card chrome-label hidden rounded-full px-4 py-2.5 text-ink-dim lg:block">
+            Drag · zoom · hold to focus
           </p>
           <div className="playful-card flex items-center gap-1 rounded-full p-1">
-            <button
-              type="button"
+            <ChunkyIconButton
               data-map-ui
-              aria-label="Zoom out"
+              label="Zoom out"
+              variant="ghost"
+              className="!h-9 !w-9 !min-h-0 text-sm"
               onClick={() => {
                 const element = viewportRef.current?.getBoundingClientRect()
                 if (!element) return
                 applyZoomAt(element.left + element.width / 2, element.top + element.height / 2, zoom * 0.85)
               }}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-ink-dim hover:bg-surface-3 hover:text-ink"
             >
               −
-            </button>
-            <button
-              type="button"
+            </ChunkyIconButton>
+            <ChunkyButton
               data-map-ui
+              variant="ghost"
+              size="sm"
               aria-label="Reset map view"
+              className="!min-h-0 !px-2.5 !py-1.5 !tracking-normal normal-case"
               onClick={resetCamera}
-              className="rounded-full px-2.5 py-1.5 text-[10px] font-bold text-ink-dim hover:bg-surface-3 hover:text-ink"
             >
               {Math.round(zoom * 100)}%
-            </button>
-            <button
-              type="button"
+            </ChunkyButton>
+            <ChunkyIconButton
               data-map-ui
-              aria-label="Zoom in"
+              label="Zoom in"
+              variant="ghost"
+              className="!h-9 !w-9 !min-h-0 text-sm"
               onClick={() => {
                 const element = viewportRef.current?.getBoundingClientRect()
                 if (!element) return
                 applyZoomAt(element.left + element.width / 2, element.top + element.height / 2, zoom * 1.15)
               }}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold text-ink-dim hover:bg-surface-3 hover:text-ink"
             >
               +
-            </button>
+            </ChunkyIconButton>
           </div>
         </div>
       </div>
 
       <div
         ref={viewportRef}
-        className="relative min-h-0 flex-1 cursor-grab overflow-hidden rounded-[2rem] bg-surface-2/55 active:cursor-grabbing touch-none"
+        className="relative min-h-0 flex-1 cursor-grab touch-none overflow-hidden rounded-[var(--radius-panel)] border-2 border-ink-stroke bg-surface-2 active:cursor-grabbing"
         onPointerDown={onViewportPointerDown}
         onPointerMove={onViewportPointerMove}
         onPointerUp={endPan}
@@ -551,7 +554,8 @@ export function BubbleBoard() {
                 width: child.size,
                 height: child.size,
                 background: `radial-gradient(circle at 34% 28%, color-mix(in srgb, ${color} 55%, white), ${color})`,
-                boxShadow: `0 8px 18px color-mix(in srgb, ${color} 30%, transparent)`,
+                boxShadow: `0 4px 0 0 color-mix(in srgb, ${color} 55%, #4a4458)`,
+                border: '2px solid color-mix(in srgb, var(--ink-stroke) 55%, transparent)',
               } as CSSProperties
               return (
                 <motion.button
@@ -566,9 +570,11 @@ export function BubbleBoard() {
                     top: style.top,
                   }}
                   exit={{ opacity: 0, scale: 0.3 }}
-                  transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.92 }}
+                  transition={springSoft}
                   onClick={() => child.task.id && void toggleSubtaskDone(child.task.id)}
-                  className="absolute z-[12] flex flex-col items-center justify-center rounded-full border border-white/50 px-2.5 text-center text-bubble-ink transition-transform hover:scale-105"
+                  className="absolute z-[12] flex flex-col items-center justify-center rounded-full px-2.5 text-center text-bubble-ink"
                   style={style}
                   aria-pressed={Boolean(child.task.done)}
                   aria-label={`Step: ${child.task.title}. ${
@@ -643,7 +649,7 @@ export function BubbleBoard() {
               className="playful-card absolute bottom-4 left-1/2 z-30 flex max-w-[92%] -translate-x-1/2 items-center gap-2.5 rounded-full px-3.5 py-2.5"
             >
               <span
-                className="h-7 w-7 shrink-0 rounded-full border border-white/50 soft-shadow"
+                className="h-7 w-7 shrink-0 rounded-full border-2 border-ink-stroke soft-shadow"
                 style={{ background: bubbleColorFor(selectedPoint.task.id) }}
                 aria-hidden
               />
@@ -651,7 +657,7 @@ export function BubbleBoard() {
                 <span className="block truncate text-xs font-bold tracking-tight text-ink">
                   {selectedPoint.task.title}
                 </span>
-                <span className="pixel-label block text-ink-faint">
+                <span className="chrome-label block text-ink-faint">
                   {PRIORITY_LABEL[selectedPoint.task.priority]}
                   {selectedChildren.length > 0 &&
                     ` · ${selectedChildren.filter((child) => child.done).length}/${selectedChildren.length} steps`}
@@ -660,50 +666,51 @@ export function BubbleBoard() {
 
               {confirmingDelete ? (
                 <>
-                  <span className="px-1 text-[11px] font-bold text-ink-dim">Let it go?</span>
-                  <button
-                    type="button"
+                  <span className="chrome-label px-1 text-ink-dim">Let it go?</span>
+                  <ChunkyButton
+                    variant="danger"
+                    size="sm"
                     onClick={() => void permanentlyDelete(selectedPoint.task)}
-                    className="rounded-full bg-danger px-4 py-1.5 text-[11px] font-bold text-white"
                   >
                     Yes, pop it
-                  </button>
-                  <button
-                    type="button"
+                  </ChunkyButton>
+                  <ChunkyButton
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setConfirmingDelete(false)}
-                    className="rounded-full px-3 py-1.5 text-[11px] font-bold text-ink-dim hover:text-ink"
                   >
                     Keep
-                  </button>
+                  </ChunkyButton>
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
+                  <ChunkyButton
+                    variant="secondary"
+                    size="sm"
                     onClick={() => {
                       setConfirmingDelete(false)
                       setEditing(true)
                     }}
-                    className="rounded-full border border-line bg-surface px-3.5 py-1.5 text-[11px] font-bold text-ink-dim transition hover:-translate-y-0.5 hover:text-ink"
                   >
                     Edit
-                  </button>
+                  </ChunkyButton>
                   {selectedPoint.task.status !== 'popped' && (
-                    <button
-                      type="button"
+                    <ChunkyButton
+                      variant="primary"
+                      size="sm"
                       onClick={() => void startLockIn(selectedPoint.task)}
-                      className="rounded-full bg-accent px-4 py-1.5 text-[11px] font-bold text-on-accent shadow-sm transition hover:-translate-y-0.5"
                     >
                       Let&apos;s focus
-                    </button>
+                    </ChunkyButton>
                   )}
-                  <button
-                    type="button"
+                  <ChunkyButton
+                    variant="ghost"
+                    size="sm"
+                    className="!text-ink-dim hover:!text-danger"
                     onClick={() => setConfirmingDelete(true)}
-                    className="rounded-full px-3 py-1.5 text-[11px] font-bold text-ink-dim hover:text-danger"
                   >
                     Remove
-                  </button>
+                  </ChunkyButton>
                 </>
               )}
             </motion.div>
@@ -729,16 +736,16 @@ export function BubbleBoard() {
           <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 px-8 text-center">
             <div className="flex items-end gap-3" aria-hidden>
               <span
-                className="bubble-idle h-11 w-11 bg-bubble-peach/85"
+                className="bubble-idle h-11 w-11 border-2 border-ink-stroke bg-bubble-peach/85 soft-shadow"
                 style={{ animationDelay: '-1.5s' }}
               />
               <Mascot mood="idle" size={72} />
               <span
-                className="bubble-idle h-8 w-8 bg-bubble-orchid/85"
+                className="bubble-idle h-8 w-8 border-2 border-ink-stroke bg-bubble-orchid/85 soft-shadow"
                 style={{ animationDelay: '-3.5s' }}
               />
               <span
-                className="bubble-idle h-9 w-9 bg-bubble-butter/85"
+                className="bubble-idle h-9 w-9 border-2 border-ink-stroke bg-bubble-butter/85 soft-shadow"
                 style={{ animationDelay: '-2.2s' }}
               />
             </div>

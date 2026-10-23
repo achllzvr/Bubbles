@@ -9,6 +9,7 @@ import {
 import { motion } from 'framer-motion'
 import { bubbleColorFor, PRIORITY_LABEL, type Task } from '../db/schema'
 import { BubbleFace, type FaceExpression } from './BubbleFace'
+import { pressTransition, springSoft } from './ui/motionPresets'
 
 const LONG_PRESS_MS = 560
 const MOVE_CANCEL_PX = 12
@@ -145,8 +146,9 @@ export function BubbleCard({
   const bubbleStyle = {
     background: `radial-gradient(circle at 34% 26%, color-mix(in srgb, ${color} 52%, white), ${color} 78%, color-mix(in srgb, ${color} 88%, #c9a0b8))`,
     boxShadow: selected
-      ? `0 16px 36px color-mix(in srgb, ${color} 36%, transparent), inset 0 2px 10px rgba(255,255,255,.55)`
-      : `0 8px 22px color-mix(in srgb, ${color} 28%, transparent), inset 0 2px 8px rgba(255,255,255,.48)`,
+      ? `0 0 0 3px var(--accent), 0 6px 0 0 var(--accent-dark), inset 0 2px 8px rgba(255,255,255,.5)`
+      : `0 5px 0 0 color-mix(in srgb, ${color} 55%, #4a4458), inset 0 2px 8px rgba(255,255,255,.48)`,
+    border: '2px solid color-mix(in srgb, var(--ink-stroke) 55%, transparent)',
     animationDelay: `${((task.id ?? 1) % 9) * -0.7}s`,
   } as CSSProperties
 
@@ -162,7 +164,7 @@ export function BubbleCard({
         scale: holding ? 1.07 : selected ? 1.03 : 1,
         opacity: dimmed ? 0.42 : popped ? 0.62 : 1,
       }}
-      transition={{ type: 'spring', stiffness: 250, damping: 22 }}
+      transition={springSoft}
       className={`relative select-none ${focused ? 'focus-halo rounded-full' : ''}`}
       data-task-id={task.id}
     >
@@ -206,7 +208,9 @@ export function BubbleCard({
         onContextMenu={(event) => {
           if (onLongPress) event.preventDefault()
         }}
-        className={`bubble-idle relative flex h-full w-full touch-none flex-col items-center justify-center gap-1.5 overflow-hidden border border-white/45 px-3.5 text-center text-bubble-ink ${
+        whileTap={holding ? undefined : { scale: 0.94 }}
+        transition={pressTransition}
+        className={`bubble-idle relative flex h-full w-full touch-none flex-col items-center justify-center gap-1.5 overflow-hidden rounded-full px-3.5 text-center text-bubble-ink ${
           popped ? 'saturate-[.75]' : ''
         }`}
         style={bubbleStyle}
