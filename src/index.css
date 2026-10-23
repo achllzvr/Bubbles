@@ -1,0 +1,421 @@
+@import '@fontsource/nunito/latin-400.css';
+@import '@fontsource/nunito/latin-600.css';
+@import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/press-start-2p/latin-400.css';
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Nunito', system-ui, sans-serif;
+  --font-display: 'Nunito', system-ui, sans-serif;
+  --font-pixel: 'Press Start 2P', monospace;
+  --color-ink: var(--ink);
+  --color-ink-dim: var(--ink-dim);
+  --color-ink-faint: var(--ink-faint);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-bubble-ui: var(--bubble-ui);
+  --color-bubble-uni: var(--bubble-uni);
+  --color-bubble-nui: var(--bubble-nui);
+  --color-bubble-nuni: var(--bubble-nuni);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-bubble-mint: var(--bubble-mint);
+  --color-bubble-peach: var(--bubble-peach);
+  --color-bubble-butter: var(--bubble-butter);
+  --color-bubble-lime: var(--bubble-lime);
+  --color-bubble-sky: var(--bubble-sky);
+  --color-bubble-orchid: var(--bubble-orchid);
+  --color-bubble-ink: var(--bubble-ink);
+  --color-bubble-ink-soft: var(--bubble-ink-soft);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+}
+
+:root,
+:root[data-theme='light'] {
+  --surface: #fff8f2;
+  --surface-2: #fffcf8;
+  --surface-3: #f6efe6;
+  --surface-glass: rgba(255, 252, 248, 0.86);
+  --ink: #2f2b3c;
+  --ink-dim: #6a6478;
+  --ink-faint: #958fa3;
+  --line: rgba(73, 62, 88, 0.12);
+  --accent: #c48ad8;
+  --on-accent: #2a2434;
+  --accent-soft: #f3e4fb;
+  --bubble-ui: #f7a8b8;
+  --bubble-uni: #f5b27a;
+  --bubble-nui: #8fb5f5;
+  --bubble-nuni: #b39df0;
+  --bubble-mint: #7ed9b8;
+  --bubble-peach: #ffb3a0;
+  --bubble-butter: #f3d36b;
+  --bubble-lime: #b8e986;
+  --bubble-sky: #7fd4e8;
+  --bubble-orchid: #e0a0e8;
+  --success: #4a9d78;
+  --danger: #d8666a;
+  --shadow: 0 14px 36px rgba(120, 90, 130, 0.11);
+  --shadow-soft: 0 6px 18px rgba(120, 90, 130, 0.08);
+  --shadow-lift: 0 10px 28px rgba(120, 90, 130, 0.12);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --radius-card: 1.75rem;
+  --radius-panel: 2rem;
+  --grain-opacity: 0.02;
+}
+
+/* Bubble fills stay pastel-light in both themes, so ink on them is constant. */
+:root {
+  --bubble-ink: #2f2b3c;
+  --bubble-ink-soft: rgba(47, 43, 60, 0.62);
+}
+
+:root[data-theme='dark'] {
+  --surface: #1a1624;
+  --surface-2: #231f30;
+  --surface-3: #2e293c;
+  --surface-glass: rgba(35, 31, 48, 0.88);
+  --ink: #faf3ea;
+  --ink-dim: #c5bbcc;
+  --ink-faint: #91879c;
+  --line: rgba(240, 225, 247, 0.12);
+  --accent: #d4a8e8;
+  --on-accent: #2a2434;
+  --accent-soft: #3a3048;
+  --bubble-ui: #e98693;
+  --bubble-uni: #e9b461;
+  --bubble-nui: #7eb0e8;
+  --bubble-nuni: #a893dc;
+  --bubble-mint: #7fc8a4;
+  --bubble-peach: #e8a090;
+  --bubble-butter: #e0c060;
+  --bubble-lime: #a0d070;
+  --bubble-sky: #70c0d4;
+  --bubble-orchid: #c890d0;
+  --success: #70c99d;
+  --danger: #ee8792;
+  --shadow: 0 16px 40px rgba(8, 6, 16, 0.32);
+  --shadow-soft: 0 8px 22px rgba(8, 6, 16, 0.22);
+  --shadow-lift: 0 12px 32px rgba(8, 6, 16, 0.28);
+  --grain-opacity: 0.03;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  content: '';
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  min-height: 44px;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 75%, white);
+  outline-offset: 3px;
+}
+
+*,
+* > * {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--ink-faint) 45%, transparent) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink-faint) 40%, transparent);
+  border: 2px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--ink-faint) 70%, transparent);
+  background-clip: content-box;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes bubble-wobble {
+  0%,
+  100% {
+    border-radius: 48% 52% 50% 50% / 49% 47% 53% 51%;
+  }
+  33% {
+    border-radius: 52% 48% 46% 54% / 51% 54% 46% 49%;
+  }
+  66% {
+    border-radius: 46% 54% 53% 47% / 54% 48% 52% 46%;
+  }
+}
+
+@keyframes bubble-idle {
+  0%,
+  100% {
+    border-radius: 48% 52% 50% 50% / 49% 47% 53% 51%;
+    transform: translateY(0);
+  }
+  33% {
+    border-radius: 52% 48% 46% 54% / 51% 54% 46% 49%;
+    transform: translateY(-4px);
+  }
+  66% {
+    border-radius: 46% 54% 53% 47% / 54% 48% 52% 46%;
+    transform: translateY(2px);
+  }
+}
+
+@keyframes focus-halo {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--bubble-orchid) 22%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 14px color-mix(in srgb, var(--bubble-peach) 0%, transparent);
+  }
+}
+
+@keyframes pixel-blink {
+  0%,
+  45%,
+  100% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes sparkle-pop {
+  0% {
+    transform: scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1) rotate(12deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.85) rotate(0deg);
+    opacity: 0.75;
+  }
+}
+
+@keyframes dot-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  40% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-float-soft {
+  animation: float-soft 5s ease-in-out infinite;
+}
+
+.font-pixel {
+  font-family: var(--font-pixel);
+}
+
+/* Press Start 2P is only crisp at whole-pixel sizes, so micro-labels are fixed. */
+.pixel-label {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pixel-label-lg {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.playful-card {
+  border: 1px solid var(--line);
+  background: var(--surface-glass);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+  border-radius: var(--radius-card);
+}
+
+.playful-panel {
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--surface-3) 70%, transparent);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-soft);
+}
+
+.soft-shadow {
+  box-shadow: var(--shadow-soft);
+}
+
+.lift-shadow {
+  box-shadow: var(--shadow-lift);
+}
+
+.bubble-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-height: 1.35rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--surface-2) 55%, white 45%);
+  background: var(--surface-2);
+  box-shadow: 0 3px 10px rgba(120, 90, 130, 0.08);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.type-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.type-body {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.type-caption {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.bubble-wobble {
+  animation: bubble-wobble 9s ease-in-out infinite;
+}
+
+.bubble-idle {
+  animation: bubble-idle 9s ease-in-out infinite;
+}
+
+.focus-halo {
+  animation: focus-halo 2.3s ease-in-out infinite;
+}
+
+.animate-sparkle {
+  animation: sparkle-pop 900ms ease-out both;
+}
+
+.typing-dot {
+  animation: dot-bounce 1.1s ease-in-out infinite;
+}
+
+.pixel-blink {
+  animation: pixel-blink 1.6s steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
